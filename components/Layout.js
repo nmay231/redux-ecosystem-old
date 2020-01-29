@@ -7,7 +7,7 @@ import MainNav from "./MainNav"
 const Layout = props => (
   <div>
     <Head>
-      <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+      <link rel="icon" type="image/x-icon" href="/public/favicon.ico" />
       <link
         href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,700"
         rel="stylesheet"

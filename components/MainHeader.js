@@ -1,7 +1,4 @@
-import FaArrowUp from "react-icons/lib/fa/arrow-up"
-import FaArrowDown from "react-icons/lib/fa/arrow-down"
-import FaStar from "react-icons/lib/fa/star"
-import FaDownload from "react-icons/lib/fa/download"
+import {FaArrowUp, FaArrowDown, FaDownload, FaStar} from "react-icons/fa"
 
 const MainHeader = ({ header }) => {
   return (

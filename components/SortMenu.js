@@ -1,17 +1,14 @@
 import React from "react"
 import Link from "next/link"
 
-import FaArrowUp from "react-icons/lib/fa/arrow-up"
-import FaArrowDown from "react-icons/lib/fa/arrow-down"
-import FaStar from "react-icons/lib/fa/star"
-import FaDownload from "react-icons/lib/fa/download"
+import {FaArrowUp, FaArrowDown, FaDownload, FaStar} from "react-icons/fa"
 
 const SortMenu = () => (
   <ul>
     <div className="header">Sort By</div>
     <li>
       <label>
-        <input checked type="checkbox" />
+        <input checked readOnly type="checkbox" />
         NPM
       </label>
       <div className="icon">
@@ -20,7 +17,7 @@ const SortMenu = () => (
     </li>
     <li>
       <label>
-        <input checked type="checkbox" />
+        <input checked readOnly type="checkbox" />
         GitHub
       </label>
       <div className="icon">

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react"
 import Link from "next/link"
 import Router from "next/router"
-import FaArrowDown from "react-icons/lib/fa/arrow-down"
+import { FaArrowDown } from "react-icons/fa"
 import SubCategoryItem from "./SubCategoryItem"
 
 class Category extends Component {
@@ -15,7 +15,7 @@ class Category extends Component {
 
     const slugInCategory = this.props.category.slug == category
     const slugInSubcategory = this.props.category.subcategories.map(
-      cat => cat.slug.indexOf(slug) > -1
+      cat => cat.slug && cat.slug.indexOf(slug) > -1
     )
 
     if (slugInCategory || slugInSubcategory.indexOf(true) == 0) {
@@ -53,7 +53,7 @@ class Category extends Component {
             {category.subcategories.map(subcategory => (
               <SubCategoryItem
                 key={category.name}
-                category={category.name}
+                category={category}
                 subcategory={subcategory}
                 repoCount={subcategory.repositories.length}
               />

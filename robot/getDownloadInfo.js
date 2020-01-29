@@ -1,67 +1,20 @@
-import fetch from "node-fetch"
-import { parseMarkdown } from "./parser"
-import { readFileSync, existsSync, truncateSync, writeFileSync } from "fs"
-import { join, resolve as _resolve } from "path"
-import { get } from "download-stats"
-import normalizeUrl from "normalize-url"
-  
-const githubAPIURL = "https://api.github.com/"
-const baseURL = githubAPIURL + "repos/markerikson/redux-ecosystem-links/"
-const databaseFile = join(__dirname, "../database.json")
+const fetch = require( 'node-fetch').default
+const get = require( 'download-stats').get
+const {join, resolve} = require( 'path')
+const {readFileSync, existsSync, truncateSync, writeFileSync} = require('fs')
+const jsonResult = require( '../database.json')
+const normalizeUrl = require( "normalize-url")
+
+const databaseFile = join(__dirname, "../database_with_metadata.json")
+const githubTokenBuffer = readFileSync(resolve(__dirname, '../githubToken.txt'))
+const githubToken = Buffer.from(githubTokenBuffer).toString()
+
+const fetchJSON = async (uri) => (await fetch(uri, { headers: { Authorization: "token " + githubToken } })).json()
+
 const githubRepoRegex = /^https:\/\/github.com\/[^\s]+\/[^\s]+$/
-
-
-(async function() {
-
-  // The token must be the only text in the file, i.e. no newline
-  const githubTokenBuffer = readFileSync(_resolve(__dirname, '../githubToken.txt'))
-  const githubToken = Buffer.from(githubTokenBuffer).toString()
-
-  const fetchJSON = async (uri) => (await fetch(uri, { headers: { Authorization: "token " + githubToken } })).json()
-
-  // Get the latest version of master
-  const treeShaData = await fetchJSON(baseURL + 'branches/master')
-  const treeSha = treeShaData.commit.commit.tree.sha
-  const reduxLinksURL = baseURL + 'git/trees/' + treeSha
-
-  // Fetch the target API.
-  console.log("Fetching", reduxLinksURL)
-  const json = await fetchJSON(reduxLinksURL)
-  console.log("Got the JSON")
-
-  // Download markdown files, parse the ast, and put to appropriate data structure.
-  let jsonResult = { categories: [], last_update: new Date() }
-  const tree = json.tree
-  await Promise.all(
-    tree.map(content => {
-      return (async function() {
-        if (
-          content.type === "blob" &&
-          content.path.split(".").pop() === "md" &&
-          content.path !== "README.md"
-        ) {
-          // Download the markdown file.
-          console.log("Downloading", content.path)
-          const encoded = (await fetchJSON(content.url)).content
-          const text = Buffer.from(encoded, 'base64').toString('ascii')
-          console.log("Download", content.path, "succeed")
-
-          // Parsing the markdown file.
-          console.log("Parsing", content.path)
-          const parsedObject = parseMarkdown(text)
-          jsonResult.categories.push(parsedObject)
-          console.log("Parsing", content.path, "succeed")
-        }
-      })()
-    })
-  )
-
-  // Sort categories by name alphabetically.
-  jsonResult.categories.sort((a, b) => {
-    return (a.name > b.name) - (a.name < b.name)
-  })
-
-  // Get additional metadata.
+const githubAPIURL = "https://api.github.com/"
+// maybe change to use ora?
+;(async () => {
   for (let category of jsonResult.categories) {
     for (let subcategory of category.subcategories) {
       await Promise.all(
@@ -118,7 +71,6 @@ const githubRepoRegex = /^https:\/\/github.com\/[^\s]+\/[^\s]+$/
     }
   }
 
-  // Convert JSON to pretty string.
   const jsonString = JSON.stringify(jsonResult, null, 2)
 
   // Save JSON result in sync because no other instructions

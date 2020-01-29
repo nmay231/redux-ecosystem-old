@@ -14,7 +14,14 @@ const Topic = ({ categories }) => (
 
 Topic.getInitialProps = async function(context) {
   const { category } = context.query
-  const res = await fetch(`http://localhost:3000/category.json/${category}`)
+  if (!category) {
+    await fetch(`http://localhost:3000/api/topics`)
+    
+    const categories = await res.json()
+
+  return { categories }
+  }
+  const res = await fetch(`http://localhost:3000/api/${category}`)
 
   const categories = await res.json()
 

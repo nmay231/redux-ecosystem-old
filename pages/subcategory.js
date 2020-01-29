@@ -12,7 +12,7 @@ const SubCategory = ({ subject }) => (
 SubCategory.getInitialProps = async function(context) {
   const { slug } = context.query
 
-  const res = await fetch(`http://localhost:3000/subcategory.json/${slug}`)
+  const res = await fetch(`http://localhost:3000/api/${slug}`)
 
   const subject = await res.json()
 

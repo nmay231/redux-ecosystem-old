@@ -1,8 +1,6 @@
 import React, { Fragment } from "react"
 import Link from "next/link"
-import FaGithub from "react-icons/lib/fa/github"
-import FaStar from "react-icons/lib/fa/star"
-import FaDownload from "react-icons/lib/fa/download"
+import {FaGithub, FaStar, FaDownload} from "react-icons/fa"
 import { formatDescription } from "./Utils/utils"
 
 const formatDate = date => {

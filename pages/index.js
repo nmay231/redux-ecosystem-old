@@ -11,7 +11,8 @@ const PostLink = ({ category }) => (
       </Link>
       {category.subcategories.map(subcategory => (
         <Link
-          as={`/${subcategory.slug}`}
+          key={`${category.slug}/${subcategory.slug}`}
+          as={`${category.slug}/${subcategory.slug}`}
           href={`/subcategory?slug=${subcategory.slug}`}
         >
           <a className="sub-topic">{subcategory.name}</a>
@@ -73,7 +74,7 @@ const Index = ({ categories }) => (
 )
 
 Index.getInitialProps = async function() {
-  const res = await fetch(`http://localhost:3000/topics.json`)
+  const res = await fetch(`http://localhost:3000/api/topics`)
   const categories = await res.json()
 
   return { categories }

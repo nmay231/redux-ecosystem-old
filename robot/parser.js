@@ -1,7 +1,7 @@
-const remark = require('remark').remark
-const slug = require('slug')
+import { remark } from 'remark'
+import slug from 'slug'
 
-exports.parseMarkdown = text => {
+export function parseMarkdown(text) {
   const ast = remark.parse(text)
   let category = '',
     subcategories = [],

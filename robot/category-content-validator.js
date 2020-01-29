@@ -1,18 +1,18 @@
-const fetch = require("node-fetch")
-const fs = require("fs")
-const path = require("path")
+import { readFileSync, existsSync, truncateSync, writeFileSync } from "fs"
+import fetch from "node-fetch"
+import { resolve, join } from "path"
+import ora from "ora"
+import { parse as remark } from 'remark'
 
 // The token must be the only text in the file, i.e. no newline
-const githubTokenBuffer = fs.readFileSync(path.resolve(__dirname, '../githubToken.txt'))
+const githubTokenBuffer = readFileSync(resolve(__dirname, '../githubToken.txt'))
 const githubToken = Buffer.from(githubTokenBuffer).toString()
 
-const categoryContentErrorFile = path.join(
+const categoryContentErrorFile = join(
   __dirname,
   "../category-content-error.md"
 )
-const githubRepoRegex = /^https:\/\/github.com\/[^\s]+\/[^\s]+$/
-const ora = require("ora")
-const remark = require('remark')()
+const URLRegex = /^https?:\/\/[^\s]([\\][^\s])+$/
 
 const fetchJSON = async (uri) => fetch(uri, { headers: { Authorization: "token " + githubToken } }).then(r => r.json())
 
@@ -103,7 +103,7 @@ function checkCategory(fileName, markdownText) {
           if (mustBeGitHubRepoLink.type !== "link") {
             errors.push("Saw: " + remark.stringify(mustBeGitHubRepoLink) + " —— Expected: <a> in repository link.")
           } else {
-            if (!githubRepoRegex.test(mustBeGitHubRepoLink.url)) {
+            if (!URLRegex.test(mustBeGitHubRepoLink.url)) {
               errors.push("Saw: " + remark.stringify(mustBeGitHubRepoLink) + " —— Expected: Valid GitHub repository link.")
             }
           }
@@ -201,9 +201,9 @@ function checkCategory(fileName, markdownText) {
     }
   })
 
-  if (fs.existsSync(categoryContentErrorFile)) {
-    fs.truncateSync(categoryContentErrorFile, 0)
+  if (existsSync(categoryContentErrorFile)) {
+    truncateSync(categoryContentErrorFile, 0)
   }
-  fs.writeFileSync(categoryContentErrorFile, reportString)
+  writeFileSync(categoryContentErrorFile, reportString)
   saveFileSpinner.succeed()
 })()

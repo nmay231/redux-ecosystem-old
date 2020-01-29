@@ -1,5 +1,6 @@
 const express = require("express")
 const next = require("next")
+const path = require('path')
 const database = require("./database.json")
 
 const dev = process.env.NODE_ENV !== "production"
@@ -11,7 +12,7 @@ app
   .then(() => {
     const server = express()
 
-    server.get("/topics.json", function(req, res) {
+    server.get("/api/topics", function(req, res) {
       const categories = database.categories.map(topic => {
         return {
           name: topic.name,
@@ -28,26 +29,30 @@ app
       res.send(categories)
     })
 
-    server.get("/category.json/:category", function(req, res) {
-      const category = database.categories.filter(
-        category => category.slug == req.params.category
-      )
-
-      res.send(category[0])
+    server.get('/public/favicon.ico', (req, res) => {
+      res.sendFile(path.resolve(__dirname,'public/favicon.ico'))
     })
 
-    server.get("/subcategory.json/:category/:subcategory", function(req, res) {
+    server.get("/api/:category/:subcategory", function(req, res) {
       const slug = `${req.params.category}/${req.params.subcategory}`
 
       const category = database.categories.filter(
         category => category.slug == req.params.category
-      )
+      )[0]
 
-      const subcategory = category[0].subcategories.filter(
+      const subcategory = category.subcategories.filter(
         subcategory => subcategory.slug == slug
+      )[0]
+
+      res.send({ subcategory: subcategory, categoryName: category.name })
+    })
+
+    server.get("/api/:category", function(req, res) {
+      const category = database.categories.filter(
+        category => category.slug == req.params.category
       )
 
-      res.send({ subcategory: subcategory[0], categoryName: category[0].name })
+      res.json(category[0])
     })
 
     server.get("/:category", (req, res) => {
