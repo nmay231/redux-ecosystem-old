@@ -1,49 +1,50 @@
-import {FaArrowUp, FaArrowDown, FaDownload, FaStar} from "react-icons/fa"
+/** @format */
+
+import { FaArrowUp, FaArrowDown, FaDownload, FaStar } from 'react-icons/fa'
 
 const MainHeader = ({ header }) => {
-  return (
-    <ul>
-      <div className="header"> {header || "All Categories"} </div>
-      <style jsx>{`
-        ul {
-          display: flex;
-          align-items: center;
-          padding: 0;
-        }
+    return (
+        <ul>
+            <div className="header"> {header || 'All Categories'} </div>
+            <style jsx>{`
+                ul {
+                    display: flex;
+                    align-items: center;
+                    padding: 0;
+                }
 
-        .header {
-          font-size: 1.8rem;
-          font-weight: 400;
-          letter-spacing: 3px;
-        }
+                .header {
+                    font-size: 1.8rem;
+                    font-weight: 400;
+                    letter-spacing: 3px;
+                }
 
-        input {
-          height: 2.4rem;
-          margin-left: auto;
-          width: 30%;
-          box-sizing: border-box;
-          padding: 0.5rem;
-          color: #0a0a0a;
-          border: 1px solid #cacaca;
-          box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
-          font-size: 1.2rem;
-          line-height: normal;
-          transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-        }
+                input {
+                    height: 2.4rem;
+                    margin-left: auto;
+                    width: 30%;
+                    box-sizing: border-box;
+                    padding: 0.5rem;
+                    color: #0a0a0a;
+                    border: 1px solid #cacaca;
+                    box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+                    font-size: 1.2rem;
+                    line-height: normal;
+                    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+                }
 
-        input:focus {
-          border: 1px solid #8a8a8a;
-          background-color: #fefefe;
-          outline: none;
-          -webkit-box-shadow: 0 0 5px #cacaca;
-          box-shadow: 0 0 5px #cacaca;
-          -webkit-transition: -webkit-box-shadow 0.5s,
-            border-color 0.25s ease-in-out;
-          transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-        }
-      `}</style>
-    </ul>
-  )
+                input:focus {
+                    border: 1px solid #8a8a8a;
+                    background-color: #fefefe;
+                    outline: none;
+                    -webkit-box-shadow: 0 0 5px #cacaca;
+                    box-shadow: 0 0 5px #cacaca;
+                    -webkit-transition: -webkit-box-shadow 0.5s, border-color 0.25s ease-in-out;
+                    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+                }
+            `}</style>
+        </ul>
+    )
 }
 
 export default MainHeader
