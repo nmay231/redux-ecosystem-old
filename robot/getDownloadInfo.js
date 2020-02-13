@@ -1,6 +1,6 @@
 /** @format */
 
-const fetch = require('node-fetch').default
+const fetch = require('isomorphic-fetch')
 const get = require('download-stats').get
 const { join, resolve } = require('path')
 const { readFileSync, existsSync, truncateSync, writeFileSync } = require('fs')
@@ -42,12 +42,12 @@ const githubAPIURL = 'https://api.github.com/'
                         const githubRepoURL = githubAPIURL + 'repos/' + repoOwner + '/' + repoName
 
                         // Get repo metadata from GitHub.
-                        console.log('Getting GitHub metadata of', repoName)
+                        // console.log('Getting GitHub metadata of', repoName)
                         const githubJSON = await fetchJSON(githubRepoURL)
                         console.log('Got GitHub metadata of', repoName)
 
                         // Get NPM downloads since last month.
-                        console.log('Getting NPM metadata of', repoName)
+                        // console.log('Getting NPM metadata of', repoName)
                         const npmJSON = await new Promise((resolve) => {
                             get.lastMonth(repoName, function(err, result) {
                                 if (err) return resolve({ downloads: 0 })
@@ -57,11 +57,11 @@ const githubAPIURL = 'https://api.github.com/'
                         console.log('Got NPM metadata of', repoName)
 
                         // Update JSON with additional metadata.
-                        repository.github_star = githubJSON.stargazers_count
+                        repository.githubStars = githubJSON.stargazers_count
                         if (githubJSON.updated_at !== undefined) {
-                            repository.github_last_update = githubJSON.updated_at.split('T')[0]
+                            repository.githubLastUpdate = githubJSON.updated_at.split('T')[0]
                         }
-                        repository.npm_download_since_last_month = npmJSON.downloads
+                        repository.npmDownloadsThisMonth = npmJSON.downloads
                     })()
                 }),
             )

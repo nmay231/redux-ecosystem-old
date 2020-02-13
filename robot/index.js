@@ -1,6 +1,6 @@
 /** @format */
 
-import fetch from 'node-fetch'
+import fetch from 'isomorphic-fetch'
 import { parseMarkdown } from './parser'
 import { readFileSync, existsSync, truncateSync, writeFileSync } from 'fs'
 import { join, resolve as _resolve } from 'path'

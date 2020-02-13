@@ -5,10 +5,7 @@ import Link from 'next/link'
 
 const SubCategoryItem = ({ category, subcategory, repoCount }) => (
     <li>
-        <Link
-            as={`${category.slug}/${subcategory.slug}`}
-            href={`/subcategory?slug=${subcategory.slug}`}
-        >
+        <Link as={`/${subcategory.slug}`} href={`/subcategory?slug=${subcategory.slug}`}>
             <a>
                 {subcategory.name} ({repoCount})
             </a>

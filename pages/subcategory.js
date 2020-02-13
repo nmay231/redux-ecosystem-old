@@ -1,6 +1,6 @@
 /** @format */
 
-import fetch from 'isomorphic-unfetch'
+import fetch from 'isomorphic-fetch'
 
 import Layout from '../components/Layout'
 import Section from '../components/Section'

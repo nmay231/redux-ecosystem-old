@@ -3,6 +3,7 @@
 const express = require('express')
 const next = require('next')
 const path = require('path')
+const morgan = require('morgan')
 const database = require('./database.json')
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -12,6 +13,10 @@ const handle = app.getRequestHandler()
 app.prepare()
     .then(() => {
         const server = express()
+
+        if (process.env.NODE_ENV === 'production') {
+            server.use(morgan('combined'))
+        }
 
         server.get('/api/topics', function(req, res) {
             const categories = database.categories.map((topic) => {
@@ -56,21 +61,21 @@ app.prepare()
             res.json(category[0])
         })
 
-        server.get('/:category', (req, res) => {
-            const actualPage = '/topic'
-            const queryParams = { category: req.params.category }
+        // server.get('/:category', (req, res) => {
+        //     const actualPage = '/topic'
+        //     const queryParams = { category: req.params.category }
 
-            app.render(req, res, actualPage, queryParams)
-        })
+        //     app.render(req, res, actualPage, queryParams)
+        // })
 
-        server.get('/:category/:subcategory', (req, res) => {
-            const actualPage = '/subcategory'
-            const queryParams = {
-                slug: `${req.params.category}/${req.params.subcategory}`,
-            }
+        // server.get('/:category/:subcategory', (req, res) => {
+        //     const actualPage = '/subcategory'
+        //     const queryParams = {
+        //         slug: `${req.params.category}/${req.params.subcategory}`,
+        //     }
 
-            app.render(req, res, actualPage, queryParams)
-        })
+        //     app.render(req, res, actualPage, queryParams)
+        // })
 
         server.get('*', (req, res) => {
             return handle(req, res)

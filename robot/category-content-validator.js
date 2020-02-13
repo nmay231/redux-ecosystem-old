@@ -1,7 +1,7 @@
 /** @format */
 
 import { readFileSync, existsSync, truncateSync, writeFileSync } from 'fs'
-import fetch from 'node-fetch'
+import fetch from 'isomorphic-fetch'
 import { resolve, join } from 'path'
 import ora from 'ora'
 import { parse as remark } from 'remark'

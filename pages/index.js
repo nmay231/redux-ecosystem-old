@@ -3,7 +3,7 @@
 import { Fragment } from 'react'
 import Layout from '../components/Layout'
 import Link from 'next/link'
-import fetch from 'isomorphic-unfetch'
+import fetch from 'isomorphic-fetch'
 
 const PostLink = ({ category }) => (
     <Fragment>
@@ -13,8 +13,8 @@ const PostLink = ({ category }) => (
             </Link>
             {category.subcategories.map((subcategory) => (
                 <Link
-                    key={`${category.slug}/${subcategory.slug}`}
-                    as={`${category.slug}/${subcategory.slug}`}
+                    key={`/${subcategory.slug}`}
+                    as={`/${subcategory.slug}`}
                     href={`/subcategory?slug=${subcategory.slug}`}
                 >
                     <a className="sub-topic">{subcategory.name}</a>
